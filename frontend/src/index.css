@@ -1,2 +1,7 @@
 @import "tailwindcss";
 @plugin "daisyui";
+
+:root, [data-theme] {
+    background-color: oklch(0 0 0);
+    color: var(--color-base-content);
+}
