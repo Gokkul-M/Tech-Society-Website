@@ -2,8 +2,9 @@ import React from "react";
 import Header from "../components/Header";
 import Hero from "../components/Hero";
 import SplashCursor from "../components/SplashCursor";
-import GridMotion from "../components/Gallery";
+import GridMotion from "../components/gallery/Gallery";
 import Footer from "../components/Footer";
+import { SmoothScrollHero } from "../components/magicui/gallery";
 
 const Home = () => {
   const items = [
@@ -37,6 +38,7 @@ const Home = () => {
     <div className="bg-black">
        <Header />
       <GridMotion items={items} />
+      <SmoothScrollHero />
       <Footer />
     </div>
   );
