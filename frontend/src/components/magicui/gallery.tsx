@@ -5,29 +5,17 @@ import {
   useScroll,
   useTransform,
 } from "framer-motion";
-import { SiSpacex } from "react-icons/si";
-import { FiArrowRight, FiMapPin } from "react-icons/fi";
 import { useRef } from "react";
 
 export const SmoothScrollHero = () => {
   return (
     <div className="bg-zinc-950">
-      <ReactLenis
-        root
-        options={{
-          // Learn more -> https://github.com/darkroomengineering/lenis?tab=readme-ov-file#instance-settings
-          lerp: 0.05,
-          //   infinite: true,
-          //   syncTouch: true,
-        }}
-      >
+      <ReactLenis root options={{ lerp: 0.05 }}>
         <Hero />
       </ReactLenis>
     </div>
   );
 };
-
-
 
 const SECTION_HEIGHT = 1500;
 
@@ -38,17 +26,17 @@ const Hero = () => {
       className="relative w-full"
     >
       <CenterImage />
-
       <ParallaxImages />
-
       <div className="absolute bottom-0 left-0 right-0 h-96 bg-gradient-to-b from-zinc-950/0 to-zinc-950" />
+
+      {/* 🔹 Added the Gallery Section Here */}
+      <GallerySection />
     </div>
   );
 };
 
 const CenterImage = () => {
   const { scrollY } = useScroll();
-
   const clip1 = useTransform(scrollY, [0, 1500], [25, 0]);
   const clip2 = useTransform(scrollY, [0, 1500], [75, 100]);
 
@@ -85,32 +73,18 @@ const ParallaxImages = () => {
   return (
     <div className="mx-auto max-w-5xl px-4 pt-[200px]">
       <ParallaxImg
-        src="https://images.unsplash.com/photo-1484600899469-230e8d1d59c0?q=80&w=2670&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
-        alt="And example of a space launch"
+        src="https://images.unsplash.com/photo-1484600899469-230e8d1d59c0?q=80&w=2670&auto=format&fit=crop"
+        alt="Space launch"
         start={-200}
         end={200}
         className="w-1/3"
       />
       <ParallaxImg
-        src="https://images.unsplash.com/photo-1446776709462-d6b525c57bd3?q=80&w=2670&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
-        alt="An example of a space launch"
+        src="https://images.unsplash.com/photo-1446776709462-d6b525c57bd3?q=80&w=2670&auto=format&fit=crop"
+        alt="Rocket launch"
         start={200}
         end={-250}
         className="mx-auto w-2/3"
-      />
-      <ParallaxImg
-        src="https://images.unsplash.com/photo-1541185933-ef5d8ed016c2?q=80&w=2370&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
-        alt="Orbiting satellite"
-        start={-200}
-        end={200}
-        className="ml-auto w-1/3"
-      />
-      <ParallaxImg
-        src="https://images.unsplash.com/photo-1494022299300-899b96e49893?q=80&w=2670&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
-        alt="Orbiting satellite"
-        start={0}
-        end={-500}
-        className="ml-24 w-5/12"
       />
     </div>
   );
@@ -118,7 +92,6 @@ const ParallaxImages = () => {
 
 const ParallaxImg = ({ className, alt, src, start, end }) => {
   const ref = useRef(null);
-
   const { scrollYProgress } = useScroll({
     target: ref,
     offset: [`${start}px end`, `end ${end * -1}px`],
@@ -126,7 +99,6 @@ const ParallaxImg = ({ className, alt, src, start, end }) => {
 
   const opacity = useTransform(scrollYProgress, [0.75, 1], [1, 0]);
   const scale = useTransform(scrollYProgress, [0.75, 1], [1, 0.85]);
-
   const y = useTransform(scrollYProgress, [0, 1], [start, end]);
   const transform = useMotionTemplate`translateY(${y}px) scale(${scale})`;
 
@@ -141,3 +113,38 @@ const ParallaxImg = ({ className, alt, src, start, end }) => {
   );
 };
 
+const GallerySection = () => {
+  const images = [
+    "https://source.unsplash.com/400x300/?nature",
+    "https://source.unsplash.com/400x300/?space",
+    "https://source.unsplash.com/400x300/?stars",
+    "https://source.unsplash.com/400x300/?galaxy",
+    "https://source.unsplash.com/400x300/?nebula",
+    "https://source.unsplash.com/400x300/?earth",
+  ];
+
+  return (
+    <div className="mt-20 px-8 py-16 bg-zinc-900">
+      <h2 className="text-center text-3xl font-bold text-white mb-8">
+        📸 Gallery
+      </h2>
+      <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+        {images.map((src, index) => (
+          <motion.div
+            key={index}
+            className="overflow-hidden rounded-lg"
+            initial={{ opacity: 0, scale: 0.8 }}
+            whileInView={{ opacity: 1, scale: 1 }}
+            transition={{ duration: 0.5, delay: index * 0.1 }}
+          >
+            <img
+              src={src}
+              alt="Gallery Image"
+              className="w-full h-48 object-cover rounded-lg shadow-lg"
+            />
+          </motion.div>
+        ))}
+      </div>
+    </div>
+  );
+};
